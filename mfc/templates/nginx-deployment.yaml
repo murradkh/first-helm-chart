@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mfc.fullname" . }}
+  labels:
+    {{- include "mfc.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mfc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mfc.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.image.containerPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-conf-vol
+              mountPath: {{ .Values.volumes.nginxMountPath }}
+              subPath: {{ .Values.volumes.nginxSubPath }}
+            - name: index-file-vol
+              mountPath: {{ .Values.volumes.indexMountPath }}
+              subPath: {{ .Values.volumes.indexSubPath }}
+      volumes:
+        - name: nginx-conf-vol
+          configMap:
+            name: {{ include "mfc.fullname" . }}-configmap-nginx
+            items:
+              - key: config
+                path: {{ .Values.volumes.nginxSubPath }}
+        - name: index-file-vol
+          configMap:
+            name: {{ include "mfc.fullname" . }}-configmap-index
+            items:
+              - key: config
+                path: {{ .Values.volumes.indexSubPath }}
