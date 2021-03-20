@@ -1,4 +1,4 @@
-# Default values for mfc.
+# Default values for new-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -9,18 +9,9 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
-  containerPort: 80
 
-
-volumes:
-  nginxMountPath: /etc/nginx/conf.d/default.conf
-  nginxSubPath: default.conf
-  indexMountPath: /var/www/html/index.html
-  indexSubPath: index.html
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
