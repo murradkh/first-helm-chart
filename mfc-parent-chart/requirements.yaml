@@ -1,0 +1,9 @@
+dependencies:
+  - name: mfc
+    alias: morad
+    repository: file://../mfc
+    version: 0
+  - name: mfc
+    alias: moeshy
+    repository: file://../mfc
+    version: 0
