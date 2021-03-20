@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "mfc.fullname" . }}-configmap-nginx
 data:
-  config: |-
+  nginx-config: |-
     server {
         listen 80;
 
@@ -11,3 +11,7 @@ data:
             alias /var/www/html/;
         }
     }
+  index-file: |-
+    <h2>
+        Hello {{ .Chart.Name }} :)
+    </h2>

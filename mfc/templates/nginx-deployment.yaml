@@ -46,11 +46,11 @@ spec:
           configMap:
             name: {{ include "mfc.fullname" . }}-configmap-nginx
             items:
-              - key: config
+              - key: nginx-config
                 path: {{ .Values.volumes.nginxSubPath }}
         - name: index-file-vol
           configMap:
-            name: {{ include "mfc.fullname" . }}-configmap-index
+            name: {{ include "mfc.fullname" . }}-configmap-nginx
             items:
-              - key: config
+              - key: index-file
                 path: {{ .Values.volumes.indexSubPath }}
