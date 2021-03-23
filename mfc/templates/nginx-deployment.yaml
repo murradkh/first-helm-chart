@@ -4,6 +4,7 @@ metadata:
   name: {{ include "mfc.fullname" . }}
   labels:
     {{- include "mfc.labels" . | nindent 4 }}
+  namespace: morad
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
